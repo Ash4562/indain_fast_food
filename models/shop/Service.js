@@ -38,7 +38,7 @@ const serviceSchema = new mongoose.Schema({
   shopId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Shop',
-    required: true,
+    // required: true,
   },
   products: [productSchema] // ⬅️ Add products array here
 }, { timestamps: true });

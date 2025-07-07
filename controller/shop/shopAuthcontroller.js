@@ -23,6 +23,8 @@ exports.registerShop = async (req, res) => {
       hotelName,
       hotelEmail,
       hotelAddress,
+      hotelAvable,
+      hotelType,
       hotelNumber,
       enterGSTNumber,
       shopActLicenseNo,
@@ -34,7 +36,8 @@ exports.registerShop = async (req, res) => {
 
     if (
       !ownerName || !ownerEmail || !ownerAddress || !ownerNumber ||
-      !hotelName || !hotelEmail || !hotelAddress || !hotelNumber
+      !hotelName || !hotelEmail || !hotelAddress || !hotelNumber || !hotelAvable ||
+      !hotelType
     ) {
       return res.status(400).json({ error: 'Required fields are missing' });
     }
@@ -48,6 +51,8 @@ exports.registerShop = async (req, res) => {
       ownerAddress,
       ownerNumber,
       hotelName,
+      hotelAvable,
+      hotelType,
       hotelEmail: hotelEmail.toLowerCase().trim(),
       hotelAddress,
       hotelNumber,
@@ -77,7 +82,7 @@ exports.registerShop = async (req, res) => {
 exports.updateShopStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("sdsdsdsddid",id);
+    console.log("sdsdsdsddid", id);
     const { status } = req.body;
 
     if (!['approved', 'rejected'].includes(status)) {
@@ -178,7 +183,7 @@ exports.verifyOTP = async (req, res) => {
         hotelImage: shop.hotelImage,
         latitude: shop.latitude,
         longitude: shop.longitude,
-        
+
         enterGSTNumber: shop.enterGSTNumber,
         enterGSTImage: shop.enterGSTImage,
         shopActLicenseNo: shop.shopActLicenseNo,
@@ -187,7 +192,7 @@ exports.verifyOTP = async (req, res) => {
         foodDrugLicenseImage: shop.foodDrugLicenseImage,
         clerkLicenseNo: shop.clerkLicenseNo,
         clerkLicenseImage: shop.clerkLicenseImage,
-        
+
         isApproved: shop.isApproved,
         isLogin: shop.isLogin,
         createdAt: shop.createdAt,
@@ -277,8 +282,10 @@ exports.updateShopDetails = async (req, res) => {
     shopActLicenseNo,
     foodDrugLicenseNo,
     clerkLicenseNo,
+    hotelAvable,
+hotelType,
     latitude,
-      longitude
+    longitude
   } = req.body;
 
   try {
@@ -292,6 +299,8 @@ exports.updateShopDetails = async (req, res) => {
     if (ownerEmail) shop.ownerEmail = ownerEmail.toLowerCase().trim();
     if (ownerAddress) shop.ownerAddress = ownerAddress.trim();
     if (ownerNumber) shop.ownerNumber = ownerNumber.trim();
+    if (hotelAvable) shop.hotelAvable = hotelAvable.trim();
+    if (hotelType) shop.hotelType = hotelType.trim();
 
     if (hotelName) shop.hotelName = hotelName.trim();
     if (hotelEmail) shop.hotelEmail = hotelEmail.toLowerCase().trim();
@@ -360,5 +369,20 @@ exports.deleteShop = async (req, res) => {
   } catch (err) {
     console.error('Delete shop error:', err);
     res.status(500).json({ error: 'Failed to delete shop' });
+  }
+};
+
+exports.getApprovedShops = async (req, res) => {
+  try {
+    const approvedShops = await shopAuthModel.find({ isApproved: 'approved' });
+
+    if (!approvedShops || approvedShops.length === 0) {
+      return res.status(404).json({ message: 'No approved shops found' });
+    }
+
+    res.status(200).json({ shops: approvedShops });
+  } catch (error) {
+    console.error('Error getting approved shops:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

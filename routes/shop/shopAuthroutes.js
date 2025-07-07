@@ -35,5 +35,6 @@ router.post(
 .get('/get/:shopId', authController.getShopDetails)
 // .get('/getShopServicesGallerys/:shopId', authController.getShopWithServicesGallery)
 .get('/allshops', authController.getAllShops)
+.get('/getApprovedShops', authController.getApprovedShops)
 .delete('/delete/:shopId', authController.deleteShop);
 module.exports = router;

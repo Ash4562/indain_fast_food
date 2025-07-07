@@ -447,24 +447,64 @@ exports.getOrdersByShopId = async (req, res) => {
   try {
     const { shopId } = req.params;
 
-    // Validate shopId format
+    // Validate ObjectId
     if (!shopId.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({ message: 'Invalid shopId format' });
     }
 
     const orders = await orderModel.find({ shopId })
-      .populate('userId', 'Name contactNo') // optional
-      .populate('addressId') // optional
-      .populate('services.serviceId', 'name') // if services contain serviceId
-      .sort({ createdAt: -1 }); // latest first
+      .populate('userId', 'Name contactNo')
+      .populate('addressId')
+      .populate('services.serviceId', 'name')
+      .sort({ createdAt: -1 });
 
     if (!orders.length) {
       return res.status(404).json({ message: 'No orders found for this shop' });
     }
 
-    res.status(200).json(orders);
+    // Custom structure: ensure `paymentSummary` comes last
+    const formattedOrders = orders.map(order => ({
+      _id: order._id,
+      userId: order.userId,
+      shopId: order.shopId,
+      addressId: order.addressId,
+      services: order.services,
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt,
+      paymentSummary: order.paymentSummary
+    }));
+
+    res.status(200).json({ orders: formattedOrders });
+
   } catch (error) {
     console.error('Error fetching orders by shopId:', error);
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
+
+// exports.getOrdersByShopId = async (req, res) => {
+//   try {
+//     const { shopId } = req.params;
+
+//     // Validate shopId format
+//     if (!shopId.match(/^[0-9a-fA-F]{24}$/)) {
+//       return res.status(400).json({ message: 'Invalid shopId format' });
+//     }
+
+//     const orders = await orderModel.find({ shopId })
+//       .populate('userId', 'Name contactNo') // optional
+//       .populate('addressId') // optional
+//       .populate('services.serviceId', 'name') // if services contain serviceId
+//       .sort({ createdAt: -1 }); // latest first
+
+//     if (!orders.length) {
+//       return res.status(404).json({ message: 'No orders found for this shop' });
+//     }
+
+//     res.status(200).json(orders);
+//   } catch (error) {
+//     console.error('Error fetching orders by shopId:', error);
+//     res.status(500).json({ message: 'Server error', error });
+//   }
+// };

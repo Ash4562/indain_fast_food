@@ -40,7 +40,12 @@ const shopSchema = new mongoose.Schema({
   hotelAddress: { type: String, required: true },
   hotelNumber: { type: String, required: true },
   hotelImage: { type: String },
-
+  hotelAvable: { type: String, enum: ["Open", "Close"], default: "Open" },
+  hotelType: {
+    type: String,
+    enum: ["Veg", "Non-Veg", "Both"],
+    required: true
+  },
   enterGSTNumber: { type: String },
   enterGSTImage: { type: String },
   shopActLicenseNo: { type: String },

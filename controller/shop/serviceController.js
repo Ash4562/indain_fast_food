@@ -21,6 +21,30 @@ exports.createService = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+exports.createServicebyadmin = async (req, res) => {
+  try {
+    const { name } = req.body;
+console.log("dsaasdasdf");
+    // if (!name) {
+    //   return res.status(400).json({ message: 'Name is required' });
+    // }
+
+    const existingService = await Service.findOne({ name:name });
+    if (existingService) {
+      return res.status(409).json({ message: 'Service already exists' });
+    }
+
+    const newService = new Service({ name });
+    await newService.save();
+
+    res.status(201).json({ message: 'Service created', service: newService });
+  } catch (err) {
+    console.error('Create Service Error:', err);  // This will show the actual error in your terminal
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
 
 exports.getAllServicesofAllshop = async (req, res) => {
   try {
@@ -34,6 +58,31 @@ exports.getAllServicesofAllshop = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch services' });
   }
 };
+
+exports.getServiceById = async (req, res) => {
+  try {
+    const { serviceId } = req.params;
+
+    // Validate serviceId format
+    if (!serviceId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({ error: 'Invalid serviceId format' });
+    }
+
+    const service = await Service.findById(serviceId)
+      .populate('shopId', 'hotelName locations hotelImage'); // Populate specific shop fields
+
+    if (!service) {
+      return res.status(404).json({ error: 'Service not found' });
+    }
+
+    res.status(200).json(service);
+  } catch (err) {
+    console.error('Error fetching service by ID:', err);
+    res.status(500).json({ error: 'Failed to fetch service' });
+  }
+};
+                                                                                                                                                                                                                                                                
+
 
 exports.getAllServices = async (req, res) => {
   try {
