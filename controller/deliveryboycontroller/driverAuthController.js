@@ -223,8 +223,51 @@ exports.login = async (req, res) => {
   };
   
 
+  exports.getDriverById = async (req, res) => {
+    try {
+      const { driverId } = req.params;
+  
+      const driver = await DriverAuth.findById(driverId);
+  
+      if (!driver) {
+        return res.status(404).json({ message: 'Driver not found' });
+      }
+  
+      res.status(200).json({ driver });
+    } catch (error) {
+      console.error('Get driver by ID failed:', error);
+      res.status(500).json({ message: 'Failed to fetch driver' });
+    }
+  };
 
-
+  exports.getAllDrivers = async (req, res) => {
+    try {
+      const drivers = await DriverAuth.find().sort({ createdAt: -1 }); // Optional sorting
+  
+      res.status(200).json({ drivers });
+    } catch (error) {
+      console.error('Get all drivers failed:', error);
+      res.status(500).json({ message: 'Failed to fetch drivers' });
+    }
+  };
+  
+  exports.deleteDriver = async (req, res) => {
+    try {
+      const { driverId } = req.params;
+  
+      const deletedDriver = await DriverAuth.findByIdAndDelete(driverId);
+  
+      if (!deletedDriver) {
+        return res.status(404).json({ message: 'Driver not found' });
+      }
+  
+      res.status(200).json({ message: 'Driver deleted successfully', driver: deletedDriver });
+    } catch (error) {
+      console.error('Delete driver failed:', error);
+      res.status(500).json({ message: 'Failed to delete driver' });
+    }
+  };
+  
 
 
 
