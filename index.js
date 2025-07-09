@@ -12,8 +12,7 @@ app.use(cors({
     origin: [
         "http://localhost:5173",
         "http://localhost:5174",
-        "https://planet-wash-site.onrender.com",
-        "https://admin.planetwash.in",
+        
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
