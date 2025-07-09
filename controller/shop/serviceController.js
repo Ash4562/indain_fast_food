@@ -21,28 +21,32 @@ exports.createService = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+
+
 exports.createServicebyadmin = async (req, res) => {
   try {
     const { name } = req.body;
-console.log("dsaasdasdf");
-    // if (!name) {
-    //   return res.status(400).json({ message: 'Name is required' });
-    // }
+    const image = req.file?.path;
 
-    const existingService = await Service.findOne({ name:name });
+    if (!name) {
+      return res.status(400).json({ message: 'Name is required' });
+    }
+
+    const existingService = await Service.findOne({ name });
     if (existingService) {
       return res.status(409).json({ message: 'Service already exists' });
     }
 
-    const newService = new Service({ name });
+    const newService = new Service({ name, image });
     await newService.save();
 
     res.status(201).json({ message: 'Service created', service: newService });
   } catch (err) {
-    console.error('Create Service Error:', err);  // This will show the actual error in your terminal
+    console.error('Create Service Error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 
 

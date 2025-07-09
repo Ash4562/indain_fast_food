@@ -6,7 +6,8 @@ const serviceController = require('../../controller/shop/serviceController');
 const upload = require('../../middleware/multer');
 
 router.post('/add', upload.single('image'), serviceController.createService);
-router.post('/addcategories',serviceController.createServicebyadmin);
+router.post('/addcategories',upload.single('image'),serviceController.createServicebyadmin);
+// router.post('/create-service-by-admin', upload.single('image'), createServicebyadmin);
 router.get('/getall/:shopId', serviceController.getAllServices);
 router.get('/getall',serviceController.getAllServicesofAllshop);
 router.put('/update/:id', upload.single('image'), serviceController.updateService);
