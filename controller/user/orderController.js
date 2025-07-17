@@ -241,7 +241,7 @@ exports.getOrdersByUserId = async (req, res) => {
 
   try {
     const orders = await orderModel.find({ userId })
-      .populate('shopId', 'shopName contactNo') // Optional: populate shop info
+      .populate('shopId', 'hotelName hotelNumber') // Optional: populate shop info
       .populate('addressId') // Optional: populate address
       .populate('services.serviceId', 'name image') // ✅ Populate service details
       .sort({ createdAt: -1 }); // latest first
