@@ -1,32 +1,4 @@
-// const mongoose = require('mongoose');
 
-// const shopSchema = new mongoose.Schema({
-//   ownerName: String,
-//   ownerEmail: { type: String, unique: true },
-//   ownerAddress: String,
-//   ownerNumber: String,
-
-//   HotelName: String,
-//   HotelEmail:  { type: String, unique: true },
-//   HotelAddress: String,
-//   HotelNumber: String,
-
-
-//   EnterGSTNumber:String,
-//   EnterGSTImage:String,
-//   ShopActLicenseNo:String,
-//   ShopActLicenseImage:String,
-//   FoodDrugLicenseNo: String,
-//   FoodDrugLicenseImage: String,
-//   ClerkLicenseNo :String,
-//   ClerkLicenseImage :String,
-//   otp: String,       // Should be String
-//   otpExpiry: Date,  
-// }, {
-//   timestamps: true 
-// });
-
-// module.exports = mongoose.model('Shop', shopSchema);
 const mongoose = require('mongoose');
 
 const shopSchema = new mongoose.Schema({

@@ -15,6 +15,7 @@ const DeliveryboySchema = new mongoose.Schema({
   DrivingLicenceImage: String,
   ProfileImage:{type:String},
   RCbookImage:{type:String},
+  deliveryBoyAvailable: { type: String, enum: ["Available", "Notavailable"], default: "Available" },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],

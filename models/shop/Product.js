@@ -18,22 +18,22 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
-  serviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Service', required: true },
-  shopId: {type: mongoose.Schema.Types.ObjectId,ref: 'Shop',required: true},
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  price: { type: Number, required: true },
-  preparationTime: { type: Number, required: true },
-  foodCategory: {
-    type: String,
-    enum: ['Veg', 'Non-Veg'],
-    default: 'Veg',
-  },
-  available: {
-    type: String,
-    enum: ['Available', 'Unavailable'],
-    default: 'Available',
-  },
+  // serviceId: { type: mongoose.Schema.Types.ObjectId, ref: 'Service', required: true },
+  // shopId: {type: mongoose.Schema.Types.ObjectId,ref: 'Shop',required: true},
+  // name: { type: String, required: true },
+  // description: { type: String, required: true },
+  // price: { type: Number, required: true },
+  // preparationTime: { type: Number, required: true },
+  // foodCategory: {
+  //   type: String,
+  //   enum: ['Veg', 'Non-Veg'],
+  //   default: 'Veg',
+  // },
+  // available: {
+  //   type: String,
+  //   enum: ['Available', 'Unavailable'],
+  //   default: 'Available',
+  // },
   image: { type: String },
 }, { timestamps: true });
 

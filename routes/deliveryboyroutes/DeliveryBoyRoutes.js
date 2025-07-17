@@ -1,7 +1,7 @@
 // routes/driverAuthRoutes.js
 const express = require('express');
 const upload = require('../../middleware/multer');
-const { registerDriver, login, verifyOTP, updateDriverStatus, sendDriverOTP, updateDriverProfile, getDriverById, getAllDrivers, deleteDriver } = require('../../controller/deliveryboycontroller/driverAuthController');
+const { registerDriver, login, verifyOTP, updateDriverStatus, sendDriverOTP, updateDriverProfile, getDriverById, getAllDrivers, deleteDriver, toggleDeliveryBoyAvailability } = require('../../controller/deliveryboycontroller/driverAuthController');
 
 
 const router = express.Router();
@@ -19,6 +19,7 @@ router.post(
 router.post('/login', login);
 router.post('/verify-otp', verifyOTP);
 router.put('/update-status/:id', updateDriverStatus);
+router.put('/toggle-availability/:driverId', toggleDeliveryBoyAvailability);
 router.post('/send-otp',sendDriverOTP);
 router.put('/update-profile/:driverId', upload.fields([
   { name: 'ProfileImage', maxCount: 1 },

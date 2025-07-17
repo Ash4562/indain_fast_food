@@ -117,7 +117,7 @@ exports.ConfirmRejectOrder = async (req, res) => {
     const { orderId } = req.params;
     const { orderStatus } = req.body;
 
-    if (!['placeorder', 'cancel'].includes(orderStatus)) {
+    if (!['placeorder', 'cancel','accepted','orderReady','rejectedByDeliveryBoy'].includes(orderStatus)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
 

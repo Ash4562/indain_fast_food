@@ -1,9 +1,9 @@
-
-
 // const client = require("../../config/twilio");
 const DriverAuth = require("../../models/deliveryboy/deliveryAuth");
 const jwt = require("jsonwebtoken");
 const sendOTP = require("../../utils/sendOTP");
+
+
 exports.registerDriver = async (req, res) => {
   try {
     const {
@@ -268,7 +268,32 @@ exports.login = async (req, res) => {
     }
   };
   
-
+  exports.toggleDeliveryBoyAvailability = async (req, res) => {
+    try {
+      const { driverId } = req.params;
+  
+      const deliveryBoy = await DriverAuth.findById(driverId);
+      if (!deliveryBoy) {
+        return res.status(404).json({ message: "Delivery boy not found" });
+      }
+  
+      // Toggle the availability
+      const newStatus =
+        deliveryBoy.deliveryBoyAvailable === "Available" ? "Notavailable" : "Available";
+  
+      deliveryBoy.deliveryBoyAvailable = newStatus;
+      await deliveryBoy.save();
+  
+      return res.status(200).json({
+        message: `Availability changed to ${newStatus}`,
+        deliveryBoy
+      });
+    } catch (error) {
+      console.error("Toggle availability failed:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  };
+  
 
 
 

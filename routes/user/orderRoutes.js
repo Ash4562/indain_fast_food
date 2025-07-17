@@ -8,10 +8,10 @@ router.post('/place', placeOrder);
 router.put('/ConfirmRejectOrder/:orderId', ConfirmRejectOrder);
 
 router.get('/all', getAllOrders);
-router.post('/verify-order-otp/:orderId', verifyOrderOTP);
 router.get('/orders/:userId', getOrdersByUserId);
 router.get('/getOrdersByUserIdwithOrderStatus/:userId', getOrdersByUserIdwithOrderStatus);
 router.put('/assign-delivery/:orderId', assignDeliveryBoy);
+router.post('/verify-order-otp/:orderId', verifyOrderOTP);
 router.put('/assign-deliveryboy-completed/:orderId', assignDeliveryAndComplete);
 router.post('/verify-delivery-otp/:orderId', verifyOrderDeliveryOTP);
 // delivery

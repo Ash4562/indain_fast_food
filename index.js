@@ -2,8 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require("cors");
 require('dotenv').config();
-// const admin = require('./firebaseAdmin');
-// const FcmToken = require('./models/FcmToken');
+
 
 const app = express();
 
@@ -24,9 +23,9 @@ app.use("/vendor/auth", require("./routes/shop/shopAuthroutes"));
 app.use('/vendor/categories', require('./routes/shop/serviceRoutes'));
 app.use('/vendor/product', require('./routes/shop/ProductRoutes'));
 // photo
-app.use('/shop/gallery', require('./routes/shop/GalleryRoutes'));
-app.use('/shop/offer', require('./routes/shop/OfferRoutes'));
-// user
+app.use('/vendor/offer', require('./routes/shop/GalleryRoutes'));
+app.use('/shop/gallery', require('./routes/shop/OfferRoutes'));
+// usergallery
 
 app.use('/user/auth', require('./routes/user/userAuthRoutes'));
 app.use('/user/address', require('./routes/user/userAddressRoutes'));
