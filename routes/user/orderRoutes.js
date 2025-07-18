@@ -1,6 +1,6 @@
 // routes/orderRoutes.js
 const express = require('express');
-const { placeOrder, getAllOrders,getOrdersByShopId, getOrderById, assignDeliveryBoy, getOrdersByDeliveryBoy, verifyOrderOTP, assignDeliveryAndComplete, verifyOrderDeliveryOTP, getOrdersByStatus, getOrdersByUserId, getOrdersByUserIdwithOrderStatus, ConfirmRejectOrder } = require('../../controller/user/orderController');
+const { placeOrder, getAllOrders,getOrdersByShopId,  assignDeliveryBoy, getOrdersByDeliveryBoy, verifyOrderOTP, assignDeliveryAndComplete, verifyOrderDeliveryOTP, getOrdersByStatus, getOrdersByUserId, getOrdersByUserIdwithOrderStatus, ConfirmRejectOrder,  recommendCategoriesWithProducts } = require('../../controller/user/orderController');
 const router = express.Router();
 // const orderController = require('../controllers/orderController');
 
@@ -8,7 +8,9 @@ router.post('/place', placeOrder);
 router.put('/ConfirmRejectOrder/:orderId', ConfirmRejectOrder);
 
 router.get('/all', getAllOrders);
+
 router.get('/orders/:userId', getOrdersByUserId);
+router.get('/recommendCategoriesByUser/:userId', recommendCategoriesWithProducts);
 router.get('/getOrdersByUserIdwithOrderStatus/:userId', getOrdersByUserIdwithOrderStatus);
 router.put('/assign-delivery/:orderId', assignDeliveryBoy);
 router.post('/verify-order-otp/:orderId', verifyOrderOTP);
