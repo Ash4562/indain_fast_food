@@ -1,10 +1,6 @@
-
-
 const Gallery = require('../../models/shop/Gallery');
 const cloudinary = require('../../utils/cloudinary');
 
-
-// 📤 Add Banner
 exports.addoffer = async (req, res) => {
   try {
     const { shopId } = req.body;
@@ -27,7 +23,6 @@ exports.addoffer = async (req, res) => {
 };
 
 
-// 📋 Get All Banners
 exports.getoffer = async (req, res) => {
   try {
     const { shopId } = req.params;
@@ -43,7 +38,7 @@ exports.getoffer = async (req, res) => {
   }
 };
 
-// 🖊️ Update Banner
+
 exports.updateoffer = async (req, res) => {
   try {
     const { id } = req.params;
@@ -66,7 +61,6 @@ exports.updateoffer = async (req, res) => {
 };
 
 
-// 🗑️ Delete Banner
 exports.deleteoffer = async (req, res) => {
   try {
     const { id } = req.params;

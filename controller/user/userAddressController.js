@@ -1,18 +1,9 @@
-
-// const User = require("../../models/user/userAuthController");
-
 const userAddress = require("../../models/user/userAddress");
 
-
-// const userAddress = require("../../models/user/userAddress");
-
-
-
-// Create or Add new address for a user
 exports.createAddress = async (req, res) => {
   const { userId, name, contactNo, location, city, pincode, email, latitude, longitude } = req.body;
 
-  // Instead of checking latitude/longitude like required fields, allow 0 as valid input too
+
   if (!userId || !name || !contactNo || !location || !city || !pincode || !email) {
     return res.status(400).json({ error: 'All required fields must be provided' });
   }
@@ -39,8 +30,6 @@ exports.createAddress = async (req, res) => {
   }
 };
 
-
-// Get all addresses for a user
 exports.getUserAddresses = async (req, res) => {
   const { userId } = req.params;
 
@@ -53,7 +42,7 @@ exports.getUserAddresses = async (req, res) => {
   }
 };
 
-// get all adress
+
 exports.getAllUsers = async (req, res) => {
     try {
       const users = await userAddress.find().sort({ createdAt: -1 }); // latest first
@@ -63,30 +52,7 @@ exports.getAllUsers = async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch users' });
     }
   };
-// Update an address
-// exports.updateAddress = async (req, res) => {
-//     const { addressId } = req.params;
-//     const {name, contactNo, location, city, pincode , email } = req.body;
-  
-//     try {
-//       const address = await userAddress.findById(addressId);
-//       if (!address) return res.status(404).json({ error: 'Address not found' });
-  
-//       // Optional updates
-//       if (name) address.name = name.trim();
-//       if (contactNo) address.contactNo = contactNo.trim();
-//       if (location) address.location = location.trim();
-//       if (email) address.email = email.trim();
-//       if (city) address.city = city.trim();
-//       if (pincode) address.pincode = pincode.trim();
-  
-//       await address.save();
-//       res.status(200).json({ message: 'Address updated successfully', address });
-//     } catch (err) {
-//       console.error('Update address error:', err);
-//       res.status(500).json({ error: 'Failed to update address' });
-//     }
-//   };
+
   
 exports.updateAddress = async (req, res) => {
   const { addressId } = req.params;
@@ -117,7 +83,6 @@ exports.updateAddress = async (req, res) => {
 };
 
 
-// DELETE: Remove an address by ID
 exports.deleteAddress = async (req, res) => {
     const { addressId } = req.params;
   

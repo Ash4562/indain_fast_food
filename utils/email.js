@@ -1,5 +1,3 @@
-
-
 const nodemailer = require("nodemailer");
 
 exports.sendEmail = async ({ to, subject, message }) => {
@@ -30,4 +28,4 @@ exports.sendEmail = async ({ to, subject, message }) => {
       throw new Error(error.message);
     }
   };
-  
+   

@@ -1,10 +1,7 @@
-// const Banner = require('../../models/adminModel/Banner');
 const AddOfferr = require('../../models/shop/AddOfferr');
 const cloudinary = require('../../utils/cloudinary');
 
-// const Banner = require("../../models/adminModel/Banner");
 
-// 📤 Add Banner
 exports.addoffer = async (req, res) => {
   try {
     const result = await cloudinary.uploader.upload(req.file.path);
@@ -17,7 +14,7 @@ exports.addoffer = async (req, res) => {
   }
 };
 
-// 📋 Get All Banners
+
 exports.getoffer = async (req, res) => {
   try {
     const banners = await AddOfferr.find();
@@ -27,7 +24,6 @@ exports.getoffer = async (req, res) => {
   }
 };
 
-// 🖊️ Update Banner
 exports.updateoffer = async (req, res) => {
   try {
     const { id } = req.params;
@@ -49,7 +45,7 @@ exports.updateoffer = async (req, res) => {
   }
 };
 
-// 🗑️ Delete Banner
+
 exports.deleteoffer = async (req, res) => {
   try {
     const { id } = req.params;

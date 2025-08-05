@@ -29,7 +29,89 @@ function getDeliveryCharges(distance) {
   return 60;
 }
 
-// user side 
+
+// exports.placeOrder = async (req, res) => {
+//   try {
+//     const {
+//       userId,
+//       shopId,
+//       addressId,
+//       services,
+//       totalAmount,
+//       pickupDateTime
+//     } = req.body;
+
+//     // 🧭 Get shop and user address
+//     const shop = await shopAuthModel.findById(shopId);
+//     const address = await userAddress.findById(addressId);
+
+//     if (!shop || !address) {
+//       return res.status(404).json({ error: 'Shop or Address not found' });
+//     }
+
+//     const shopLoc = shop.locations;
+//     const userLoc = address.locations;
+
+//     // 📏 Calculate distance & delivery charges
+//     const distance = calculateDistance(
+//       shopLoc.latitude,
+//       shopLoc.longitude,
+//       userLoc.latitude,
+//       userLoc.longitude
+//     );
+//     const deliveryCharges = getDeliveryCharges(distance);
+
+//     // 🧾 GST logic (example: 18%)
+//     const gst = +(totalAmount * 0.18).toFixed(2);
+
+//     // Optional: Delivery Partner Fee
+//     const deliveryPartnerFee = 10; // static or based on some logic
+
+//     // Final payable amount
+//     const finalAmount = totalAmount + gst + deliveryCharges + deliveryPartnerFee;
+
+//     // Generate 6-digit OTP
+//     const otp = Math.floor(1000 + Math.random() * 9000).toString();
+//     const otpExpiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 day
+
+//     // Create Order
+//     const order = new orderModel({
+//       userId,
+//       shopId,
+//       addressId,
+//       services,
+//       pickupDateTime,
+//       otp,
+//       otpExpiresAt,
+//       paymentSummary: {
+//         itemTotal: totalAmount,
+//         gst,
+//         deliveryPartnerFee,
+//         deliveryCharges,
+//         couponDiscount: 0, // future support
+//         finalAmount
+//       }
+//     });
+
+//     const savedOrder = await order.save();
+
+//     // Send OTP
+//     const user = await User.findById(userId);
+//     if (user?.email) {
+//       await sendOTP(user.email, otp);
+//     }
+
+//     res.status(201).json({
+//       message: 'Order added successfully. OTP sent.',
+//       order: savedOrder
+//     });
+
+//   } catch (error) {
+//     console.error('Order creation failed:', error);
+//     res.status(500).json({ error: 'Failed to place order' });
+//   }
+// };
+
 exports.placeOrder = async (req, res) => {
   try {
     const {
@@ -49,6 +131,11 @@ exports.placeOrder = async (req, res) => {
       return res.status(404).json({ error: 'Shop or Address not found' });
     }
 
+    // ✅ Check if hotel/shop is open
+    if (shop.hotelAvable !== "Open") {
+      return res.status(400).json({ error: 'Shop is currently closed. Cannot place order.' });
+    }
+
     const shopLoc = shop.locations;
     const userLoc = address.locations;
 
@@ -65,9 +152,8 @@ exports.placeOrder = async (req, res) => {
     const gst = +(totalAmount * 0.18).toFixed(2);
 
     // Optional: Delivery Partner Fee
-    const deliveryPartnerFee = 10; // static or based on some logic
+    const deliveryPartnerFee = 10;
 
-    // Final payable amount
     const finalAmount = totalAmount + gst + deliveryCharges + deliveryPartnerFee;
 
     // Generate 6-digit OTP
@@ -88,7 +174,7 @@ exports.placeOrder = async (req, res) => {
         gst,
         deliveryPartnerFee,
         deliveryCharges,
-        couponDiscount: 0, // future support
+        couponDiscount: 0,
         finalAmount
       }
     });
@@ -111,6 +197,7 @@ exports.placeOrder = async (req, res) => {
     res.status(500).json({ error: 'Failed to place order' });
   }
 };
+
 
 exports.ConfirmRejectOrder = async (req, res) => {
   try {
@@ -135,9 +222,6 @@ exports.ConfirmRejectOrder = async (req, res) => {
     res.status(500).json({ error: 'Failed to update driver status' });
   }
 };
-
-
-
 
 exports.verifyOrderOTP = async (req, res) => {
   const { orderId } = req.params;
@@ -170,10 +254,6 @@ exports.verifyOrderOTP = async (req, res) => {
   }
 };
 
-
-
-
-// admin side 
 exports.getAllOrders = async (req, res) => {
   try {
     const orders = await orderModel.find()
@@ -200,12 +280,6 @@ exports.getAllOrders = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 exports.getOrdersByUserId = async (req, res) => {
   const { userId } = req.params;
 
@@ -231,13 +305,6 @@ exports.getOrdersByUserId = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 };
-
-// user side 
-
-
-
-
-const Service = require("../../models/shop/Service")
 
 exports.recommendCategoriesWithProducts = async (req, res) => {
   const { userId } = req.params;
@@ -307,9 +374,6 @@ exports.recommendCategoriesWithProducts = async (req, res) => {
     res.status(500).json({ error: 'Failed to generate recommendations' });
   }
 };
-
-
-
 
 exports.getOrdersByUserIdwithOrderStatus = async (req, res) => {
   const { userId } = req.params;

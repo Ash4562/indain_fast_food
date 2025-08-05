@@ -1,4 +1,3 @@
-
 const jwt = require('jsonwebtoken');
 const sendOTP = require('../../utils/sendOTP')
 const Service = require('../../models/shop/Service');
@@ -7,9 +6,6 @@ const shopAuthModel = require('../../models/shop/shopAuthModel');
 
 const generateOTP = () => Math.floor(1000 + Math.random() * 9000).toString();
 
-
-
-// global temp store (or use Redis/DB if production)
 const tempRegistrations = new Map(); // key: email, value: { data + otp }
 
 
@@ -103,8 +99,6 @@ exports.updateShopStatus = async (req, res) => {
     res.status(500).json({ error: 'Failed to update status' });
   }
 };
-
-
 
 
 exports.login = async (req, res) => {
@@ -383,6 +377,27 @@ exports.getApprovedShops = async (req, res) => {
     res.status(200).json({ shops: approvedShops });
   } catch (error) {
     console.error('Error getting approved shops:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+exports.getShopsByStatus = async (req, res) => {
+  try {
+    const { status } = req.params;
+
+    const validStatuses = ['pending', 'approved', 'rejected'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const shops = await shopAuthModel.find({ isApproved: status });
+
+    if (!shops || shops.length === 0) {
+      return res.status(404).json({ message: `No ${status} shops found` });
+    }
+
+    res.status(200).json({ status, shops });
+  } catch (error) {
+    console.error(`Error getting ${req.params.status} shops:`, error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };

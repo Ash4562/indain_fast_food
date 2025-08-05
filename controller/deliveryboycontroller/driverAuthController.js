@@ -61,7 +61,7 @@ console.log("body",req.body);
   }
 };
 
-const otpStore = {}; // Or use DB/session in production
+const otpStore = {}; 
 
 exports.updateDriverStatus = async (req, res) => {
   try {
@@ -125,7 +125,7 @@ exports.login = async (req, res) => {
     }
   };
   
-  // ✅ OTP Verification
+
   exports.verifyOTP = async (req, res) => {
     try {
       const { driverId, otp } = req.body;
@@ -277,7 +277,7 @@ exports.login = async (req, res) => {
         return res.status(404).json({ message: "Delivery boy not found" });
       }
   
-      // Toggle the availability
+      
       const newStatus =
         deliveryBoy.deliveryBoyAvailable === "Available" ? "Notavailable" : "Available";
   
@@ -294,109 +294,3 @@ exports.login = async (req, res) => {
     }
   };
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// exports.login = async (req, res) => {
-//   const { phone } = req.body;
-
-//   try {
-//     if (!phone || phone.length !== 10) {
-//       return res.status(400).json({ message: 'Please provide a valid 10-digit phone number.' });
-//     }
-
-//     const driver = await DriverAuth.findOne({ phone });
-
-//     if (!driver) {
-//       return res.status(404).json({ message: 'No driver found. Please enter a registered phone number.' });
-//     }
-
-//     if (driver.status !== 'approved') {
-//       return res.status(403).json({ message: 'Your registration is not approved yet.' });
-//     }
-
-//     const otp = Math.floor(1000 + Math.random() * 9000);
-//     const fullPhone = `+91${phone}`;
-
-//     console.log("Sending OTP to:", fullPhone, "| OTP:", otp);
-
-//     await client.messages.create({
-//       body: `Your OTP for login is: ${otp}`,
-//       from: process.env.TWILIO_PHONE_NUMBER,
-//       to: fullPhone,
-//     });
-
-//     // ✅ Store OTP temporarily
-//     otpStore[driver._id] = otp;
-
-//     res.status(200).json({ message: 'OTP sent successfully', driverId: driver._id });
-//   } catch (error) {
-//     console.error('Error sending OTP:', error);
-//     res.status(500).json({ message: 'Failed to send OTP' });
-//   }
-// };
-
-
-// exports.verifyOTP = async (req, res) => {
-//   try {
-//     const { driverId, otp } = req.body;
-
-//     if (!driverId || !otp) {
-//       console.log("Missing driverId or OTP");
-//       return res.status(400).json({ message: 'Missing driverId or OTP' });
-//     }
-
-//     console.log("Verifying OTP for driverId:", driverId, " | OTP:", otp);
-
-//     const storedOtp = otpStore[driverId];
-//     console.log("Stored OTP:", storedOtp);
-
-//     if (!storedOtp || parseInt(otp) !== storedOtp) {
-//       console.log("Invalid or expired OTP");
-//       return res.status(400).json({ message: 'Invalid or expired OTP' });
-//     }
-
-//     // Generate token
-//     const token = jwt.sign({ id: driverId }, process.env.JWT_SECRET, { expiresIn: '1d' });
-
-//     res.cookie('token', token, {
-//       httpOnly: true,
-//       secure: process.env.NODE_ENV === 'production',
-//       sameSite: 'strict',
-//       maxAge: 24 * 60 * 60 * 1000,
-//     });
-
-//     delete otpStore[driverId];
-
-//     return res.status(200).json({ message: 'Login successful' });
-
-//   } catch (error) {
-//     console.error('OTP verification failed:', error.message);
-//     console.error(error.stack); // 🔍 print full trace
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// };

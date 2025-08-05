@@ -1,7 +1,7 @@
 
 const ContactusModel = require("../../models/contact/ContactusModel");
 const { sendEmail } = require("../../utils/email");
-// const { sendEmail } = require("../../utils/email");
+
 
 
 exports.createContact = async (req, res) => {
@@ -12,12 +12,12 @@ exports.createContact = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        // Save to DB
+     
         const newContact = new ContactusModel
             ({ name, email, contact, message ,address});
         await newContact.save();
 
-        // Send email to admin
+        
         const emailContent = `
         <h3>New Contact Received</h3>
         <p><strong>Name:</strong> ${name}</p>
@@ -41,4 +41,3 @@ exports.createContact = async (req, res) => {
         res.status(500).json({ message: 'Server error. Please try again later.' });
     }
 };
-// 

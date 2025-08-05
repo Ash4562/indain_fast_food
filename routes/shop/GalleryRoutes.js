@@ -1,9 +1,8 @@
 const express = require('express');
-// const upload = require('../../middlewares/multer');
+
 
 const upload = require('../../middleware/multer');
 const { addoffer, getoffer, updateoffer, deleteoffer, getAllOffersAllshop } = require('../../controller/shop/GalleryController');
-// const { addoffer, getoffer, updateoffer, deleteoffer } = require('../../controller/shop/OfferController');
 const router = express.Router();
 
 

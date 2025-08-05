@@ -6,12 +6,10 @@ const userAuthController = require('../../models/user/userAuthController');
 
 const generateOTP = () => Math.floor(1000 + Math.random() * 9000).toString();
 
-// Temporary store for registration data
+
 const tempUsers = new Map(); // key: email, value: { userData + otp }
 
-/**
- * Register - Step 1: Store data and send OTP
- */
+
 exports.register = async (req, res) => {
   const { Name, contactNo, email } = req.body;
 
@@ -40,9 +38,7 @@ exports.register = async (req, res) => {
   }
 };
 
-/**
- * Login - Step 1: Generate and send OTP
- */
+
 exports.login = async (req, res) => {
   const { email } = req.body;
   try {
@@ -62,9 +58,7 @@ exports.login = async (req, res) => {
   }
 };
 
-/**
- * OTP Verification (for both register and login)
- */
+
 exports.verifyOtp = async (req, res) => {
   const { email, otp: inputOtp, isLogin } = req.body;
   const normalizedEmail = email.toLowerCase().trim();
@@ -109,9 +103,7 @@ exports.verifyOtp = async (req, res) => {
   }
 };
 
-/**
- * Resend OTP
- */
+
 exports.resendOtp = async (req, res) => {
   const { email, isLogin } = req.body;
   const normalizedEmail = email.toLowerCase().trim();
@@ -144,9 +136,7 @@ exports.resendOtp = async (req, res) => {
   }
 };
 
-/**
- * Logout - (Token removal on frontend, but for server validation, you can store blacklisted tokens or use short expiry)
- */
+
 exports.logout = async (req, res) => {
   // In JWT, logout is handled client-side. If you want to invalidate, use a token blacklist (Redis etc.)
   try {
@@ -186,6 +176,7 @@ exports.updateUserDetails = async (req, res) => {
     res.status(500).json({ error: 'Failed to update user' });
   }
 };
+
 exports.getUserDetails = async (req, res) => {
     const { userId } = req.params;
   
@@ -212,6 +203,7 @@ exports.getUserDetails = async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch users' });
     }
   };
+  
   exports.deleteUser = async (req, res) => {
     const { userId } = req.params;
   

@@ -1,5 +1,3 @@
-
-
 const Service = require("../../models/shop/Service");
 const shopAuthModel = require("../../models/shop/shopAuthModel");
 
@@ -21,7 +19,6 @@ exports.createService = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
-
 
 exports.createServicebyadmin = async (req, res) => {
   try {
@@ -48,8 +45,6 @@ exports.createServicebyadmin = async (req, res) => {
 };
 
 
-
-
 exports.getAllServicesofAllshop = async (req, res) => {
   try {
     const services = await Service.find()
@@ -66,8 +61,6 @@ exports.getAllServicesofAllshop = async (req, res) => {
 exports.getServiceById = async (req, res) => {
   try {
     const { serviceId } = req.params;
-
-    // Validate serviceId format
     if (!serviceId.match(/^[0-9a-fA-F]{24}$/)) {
       return res.status(400).json({ error: 'Invalid serviceId format' });
     }
@@ -87,7 +80,6 @@ exports.getServiceById = async (req, res) => {
 };
                                                                                                                                                                                                                                                                 
 
-
 exports.getAllServices = async (req, res) => {
   try {
     const { shopId } = req.params;
@@ -106,8 +98,6 @@ exports.getAllServices = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch services' });
   }
 };
-
-
 
 exports.updateService = async (req, res) => {
   try {
@@ -146,17 +136,17 @@ exports.getShopsByServiceName = async (req, res) => {
       return res.status(400).json({ error: 'categories name is required' });
     }
 
-    // Step 1: Find all services with that name
+
     const matchedServices = await Service.find({ name: categoriesName });
 
     if (matchedServices.length === 0) {
       return res.status(404).json({ message: 'No categories found with this name' });
     }
 
-    // Step 2: Extract unique shopIds
+
     const shopIds = [...new Set(matchedServices.map(service => service.shopId))];
 
-    // Step 3: Find all shops with those IDs
+
     const shops = await shopAuthModel.find({ _id: { $in: shopIds } });
 
     res.status(200).json({ shops });
@@ -165,11 +155,6 @@ exports.getShopsByServiceName = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
-
-
-
-// product
-
 
 
 exports.addProductToService = async (req, res) => {
@@ -191,13 +176,13 @@ exports.addProductToService = async (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    // ✅ Fetch the correct service
+ 
     const service = await Service.findById(serviceId);
     if (!service) {
       return res.status(404).json({ message: "Service not found" });
     }
 
-    // ✅ Push product into embedded products array
+   
     service.products.push({
       name,
       description,

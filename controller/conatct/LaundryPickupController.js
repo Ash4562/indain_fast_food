@@ -1,5 +1,3 @@
-
-
 const LaundryPickup = require("../../models/contact/LaundryPickup");
 const { sendEmail } = require("../../utils/email");
 
@@ -12,12 +10,12 @@ exports.Pickup = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        // Save to DB
+
         const newContact = new LaundryPickup
             ({name,  contact,address, service,PickupDateTime, SpecialInstructions});
         await newContact.save();
 
-        // Send email to admin
+      
         const emailContent = `
         <h3>New Contact Received</h3>
         <p><strong>Name:</strong> ${name}</p>
