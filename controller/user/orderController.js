@@ -522,7 +522,7 @@ exports.getOrdersByDeliveryBoy = async (req, res) => {
       .populate('addressId')
       .populate('shopId')
       .populate('services.serviceId')
-      .populate('services.products.productId');
+      // .populate('services.products.productId');
 
     if (orders.length === 0) {
       return res.status(404).json({ message: 'No orders assigned to this delivery boy' });
