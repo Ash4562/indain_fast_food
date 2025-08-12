@@ -197,10 +197,26 @@ exports.login = async (req, res) => {
   exports.updateDriverProfile = async (req, res) => {
     try {
       const { driverId } = req.params;
-      const updateData = req.body;
+      const updateData = { ...req.body }; // Start with normal form data
+  
+      // Handle uploaded files if any
+      if (req.files) {
+        if (req.files.ProfileImage && req.files.ProfileImage[0]) {
+          updateData.ProfileImage = req.files.ProfileImage[0].path; // Or filename
+        }
+        if (req.files.RCbookImage && req.files.RCbookImage[0]) {
+          updateData.RCbookImage = req.files.RCbookImage[0].path;
+        }
+        if (req.files.DrivingLicenceImage && req.files.DrivingLicenceImage[0]) {
+          updateData.DrivingLicenceImage = req.files.DrivingLicenceImage[0].path;
+        }
+        if (req.files.IDProofImage && req.files.IDProofImage[0]) {
+          updateData.IDProofImage = req.files.IDProofImage[0].path;
+        }
+      }
   
       console.log("Driver ID:", driverId);
-      console.log("Update Data:", updateData);
+      console.log("Final Update Data:", updateData);
   
       if (!Object.keys(updateData).length) {
         return res.status(400).json({ message: 'No data provided for update' });
@@ -221,6 +237,7 @@ exports.login = async (req, res) => {
       res.status(500).json({ message: 'Failed to update profile' });
     }
   };
+  
   
 
   exports.getDriverById = async (req, res) => {
